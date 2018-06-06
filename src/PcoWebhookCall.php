@@ -1,8 +1,6 @@
-<?php
+<?php namespace Smadeira\PcoWebhooks;
 
-namespace OhDear\LaravelWebhooks;
-
-class OhDearWebhookCall
+class PcoWebhookCall
 {
     public $payload = [];
 

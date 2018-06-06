@@ -1,13 +1,11 @@
-<?php
-
-namespace OhDear\LaravelWebhooks;
+<?php namespace Smadeira\PcoWebhooks;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use OhDear\LaravelWebhooks\Exceptions\WebhookFailed;
-use OhDear\LaravelWebhooks\Middlewares\VerifySignature;
+use Smadeira\PcoWebhooks\Exceptions\WebhookFailed;
+use Smadeira\PcoWebhooks\Middlewares\VerifySignature;
 
-class OhDearWebhooksController extends Controller
+class PcoWebhooksController extends Controller
 {
     public function __construct()
     {
@@ -24,9 +22,9 @@ class OhDearWebhooksController extends Controller
 
         $type = $eventPayload['type'];
 
-        $ohDearWebhookCall = new OhDearWebhookCall($eventPayload);
+        $pcoWebhookCall = new PcoWebhookCall($eventPayload);
 
-        event("ohdear-webhooks::{$type}", $ohDearWebhookCall);
+        event("pco-webhooks::{$type}", $pcoWebhookCall);
 
         $jobClass = $this->determineJobClass($type);
 
@@ -35,14 +33,14 @@ class OhDearWebhooksController extends Controller
         }
 
         if (! class_exists($jobClass)) {
-            throw WebhookFailed::jobClassDoesNotExist($jobClass, $ohDearWebhookCall);
+            throw WebhookFailed::jobClassDoesNotExist($jobClass, $pcoWebhookCall);
         }
 
-        dispatch(new $jobClass($ohDearWebhookCall));
+        dispatch(new $jobClass($pcoWebhookCall));
     }
 
     protected function determineJobClass(string $type): string
     {
-        return config("ohdear-webhooks.jobs.{$type}", '');
+        return config("pco-webhooks.jobs.{$type}", '');
     }
 }

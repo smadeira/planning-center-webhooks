@@ -1,19 +1,16 @@
 {
-    "name": "ohdearapp/laravel-ohdear-webhooks",
-    "description": "Handle Oh Dear webhook calls in a Laravel app",
+    "name": "smadeira/planning-center-webhooks",
+    "description": "Handle Planning Center webhook calls in a Laravel app",
     "keywords": [
-        "ohdear",
-        "uptime",
-        "monitoring",
-        "laravel-ohdear-webhooks"
+        "planning center",
+        "planning-center-webhooks"
     ],
-    "homepage": "https://github.com/ohdear/laravel-ohdear-webhooks",
+    "homepage": "https://github.com/smadeira/planning-center-webhooks",
     "license": "MIT",
     "authors": [
         {
-            "name": "Freek Van der Herten",
-            "email": "support@ohdearapp.com",
-            "homepage": "https://ohdearapp.com",
+            "name": "Scott Madeira",
+            "email": "smadeira@zoominternet.net",
             "role": "Developer"
         }
     ],
@@ -30,16 +27,8 @@
     },
     "autoload": {
         "psr-4": {
-            "OhDear\\LaravelWebhooks\\": "src"
+            "Smadeira\\PcoWebhooks\\": "src"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "OhDear\\LaravelWebhooks\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit"
     },
     "config": {
         "sort-packages": true
@@ -47,7 +36,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "OhDear\\LaravelWebhooks\\OhDearWebhooksServiceProvider"
+                "Smadeira\\PcoWebhooks\\PcoWebhooksServiceProvider"
             ]
         }
     }

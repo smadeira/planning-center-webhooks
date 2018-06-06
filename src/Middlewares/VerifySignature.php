@@ -1,15 +1,13 @@
-<?php
-
-namespace OhDear\LaravelWebhooks\Middlewares;
+<?php namespace Smadeira\PcoWebhooks\Middlewares;
 
 use Closure;
-use OhDear\LaravelWebhooks\Exceptions\WebhookFailed;
+use Smadeira\PcoWebhooks\Exceptions\WebhookFailed;
 
 class VerifySignature
 {
     public function handle($request, Closure $next)
     {
-        $signature = $request->header('OhDear-Signature');
+        $signature = $request->header('X-PCO-Webhooks-Authenticity');
 
         if (! $signature) {
             throw WebhookFailed::missingSignature();
@@ -24,7 +22,7 @@ class VerifySignature
 
     protected function isValid(string $signature, string $payload): bool
     {
-        $secret = config('ohdear-webhooks.signing_secret');
+        $secret = config('pco-webhooks.signing_secret');
 
         if (empty($secret)) {
             throw WebhookFailed::signingSecretNotSet();
