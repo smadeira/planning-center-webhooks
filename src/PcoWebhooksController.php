@@ -16,6 +16,8 @@ class PcoWebhooksController extends Controller
     {
         $eventPayload = json_decode($request->getContent(), true);
 
+        Log::info($eventPayload);
+
         if (! isset($eventPayload['type'])) {
             throw WebhookFailed::missingType($request);
         }
