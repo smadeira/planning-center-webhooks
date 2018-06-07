@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Smadeira\PcoWebhooks\Exceptions\WebhookFailed;
 use Smadeira\PcoWebhooks\Middlewares\VerifySignature;
+use Log;
 
 class PcoWebhooksController extends Controller
 {
@@ -17,6 +18,8 @@ class PcoWebhooksController extends Controller
         $eventPayload = json_decode($request->getContent(), true);
 
         Log::info($eventPayload);
+
+        dd($eventPayload);
 
         if (! isset($eventPayload['type'])) {
             throw WebhookFailed::missingType($request);

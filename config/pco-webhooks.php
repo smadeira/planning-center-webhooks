@@ -6,7 +6,10 @@ return [
      * Planning Center will sign webhooks using a secret. You can find the secret used at the webhook
      * configuration settings: https://api.planningcenteronline.com/webhooks for each webhook
      */
-    'signing_secret' => env('PCO_SIGNING_SECRET'),
+    'signing_secrets' => [
+        env('PCO_DESTROY_SIGNING_SECRET'),
+        env('PCO_CREATE_SIGNING_SECRET')
+        ],
 
     /*
      * Here you can define the job that should be run when a certain webhook hits your

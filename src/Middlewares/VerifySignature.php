@@ -22,14 +22,20 @@ class VerifySignature
 
     protected function isValid(string $signature, string $payload): bool
     {
-        $secret = config('pco-webhooks.signing_secret');
+        $secrets = config('pco-webhooks.signing_secrets');
 
         if (empty($secret)) {
             throw WebhookFailed::signingSecretNotSet();
         }
 
-        $computedSignature = hash_hmac('sha256', $payload, $secret);
+        // With multiple secrets we need to check each of them against the incoming message
+        foreach($secrets as $secret){
+            $computedSignature = hash_hmac('sha256', $payload, $secret);
 
-        return hash_equals($signature, $computedSignature);
+            if ( hash_equals($signature, $computedSignature) ) return true;
+        }
+
+        // None of the secrets produced a valid response
+        return false;
     }
 }
