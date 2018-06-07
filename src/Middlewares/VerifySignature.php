@@ -24,7 +24,7 @@ class VerifySignature
     {
         $secrets = config('pco-webhooks.signing_secrets');
 
-        if (empty($secrets)) {
+        if ( ! is_array($secrets)) {
             throw WebhookFailed::signingSecretNotSet();
         }
 
