@@ -19,8 +19,7 @@ return [
      * https://api.planningcenteronline.com/webhooks
      */
     'jobs' => [
-        // 'uptimeCheckFailed' => \App\Jobs\LaravelWebhooks\HandleFailedUptimeCheck::class,
-        // 'uptimeCheckRecovered' => \App\Jobs\LaravelWebhooks\HandleRecoveredUptimeCheck::class,
-        // ...
+        'personCreated' => \App\Jobs\HandlePcoPersonCreated::class,
+        'personDestroyed' => \App\Jobs\HandlePcoPersonDestroyed::class,
     ],
 ];

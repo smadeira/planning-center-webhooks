@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Smadeira\PcoWebhooks\Exceptions\WebhookFailed;
 use Smadeira\PcoWebhooks\Middlewares\VerifySignature;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class PcoWebhooksController extends Controller
 {
@@ -17,15 +17,13 @@ class PcoWebhooksController extends Controller
     {
         $eventPayload = json_decode($request->getContent(), true);
 
-        Log::info($eventPayload);
-
-        dd($eventPayload);
-
-        if (! isset($eventPayload['type'])) {
+        if (!isset($eventPayload['data'][0]['attributes']['name'])) {
             throw WebhookFailed::missingType($request);
         }
 
-        $type = $eventPayload['type'];
+        $type = $this->determineWebhookType($eventPayload);
+
+        Log::error($type);
 
         $pcoWebhookCall = new PcoWebhookCall($eventPayload);
 
@@ -37,7 +35,7 @@ class PcoWebhooksController extends Controller
             return;
         }
 
-        if (! class_exists($jobClass)) {
+        if (!class_exists($jobClass)) {
             throw WebhookFailed::jobClassDoesNotExist($jobClass, $pcoWebhookCall);
         }
 
@@ -47,5 +45,22 @@ class PcoWebhooksController extends Controller
     protected function determineJobClass(string $type): string
     {
         return config("pco-webhooks.jobs.{$type}", '');
+    }
+
+    /**
+     * Take the PCO webhook name and return a camel-Case
+     * representation to be used as the Job name because the
+     * format from PCO will cause problems with Laravel
+     *
+     * Example: people.v2.events.person.created => personCreated
+     *
+     * @param $eventPayload
+     * @return string
+     */
+    protected function determineWebhookType($eventPayload)
+    {
+        $nameParts =  explode('.', $eventPayload['data'][0]['attributes']['name']);
+
+        return camel_case($nameParts[3] . $nameParts[4]);
     }
 }
