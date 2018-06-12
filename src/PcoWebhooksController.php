@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Smadeira\PcoWebhooks\Exceptions\WebhookFailed;
 use Smadeira\PcoWebhooks\Middlewares\VerifySignature;
-use Illuminate\Support\Facades\Log;
 
 class PcoWebhooksController extends Controller
 {
@@ -22,8 +21,6 @@ class PcoWebhooksController extends Controller
         }
 
         $type = $this->determineWebhookType($eventPayload);
-
-        Log::error($type);
 
         $pcoWebhookCall = new PcoWebhookCall($eventPayload);
 
@@ -61,6 +58,7 @@ class PcoWebhooksController extends Controller
     {
         $nameParts =  explode('.', $eventPayload['data'][0]['attributes']['name']);
 
-        return camel_case($nameParts[3] . $nameParts[4]);
+        $type = $nameParts[3] . ucfirst($nameParts[4]);
+        return $type;
     }
 }
