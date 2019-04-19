@@ -28,6 +28,19 @@ class VerifySignature
             throw WebhookFailed::signingSecretNotSet();
         }
 
+
+        // Get values from the secrets name (temporary until this is rolled out
+        // TODO - GSM  This is a HUGE kluge until old PCO tool is retired
+        if ($secrets[0] == null){
+            $secrets = null;
+    
+            $parameters = config('pco-webhooks.signing_secrets');
+            foreach($parameters as $parameter){
+                $secrets[] = getenv($parameter);
+            }            
+        }
+
+
         // With multiple secrets we need to check each of them against the incoming message
         foreach($secrets as $secret){
             $computedSignature = hash_hmac('sha256', $payload, $secret);
