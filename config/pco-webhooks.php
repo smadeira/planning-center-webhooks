@@ -8,7 +8,8 @@ return [
      */
     'signing_secrets' => [
         env('PCO_DESTROY_SIGNING_SECRET'),
-        env('PCO_CREATE_SIGNING_SECRET')
+        env('PCO_CREATE_SIGNING_SECRET'),
+        env('PCO_UPDATE_SIGNING_SECRET')
         ],
 
     /*
@@ -21,5 +22,6 @@ return [
     'jobs' => [
         'personCreated' => \App\Jobs\HandlePcoPersonCreated::class,
         'personDestroyed' => \App\Jobs\HandlePcoPersonDestroyed::class,
+        'personUpdated' => \App\Jobs\HandlePcoPersonUpdated::class,
     ],
 ];
